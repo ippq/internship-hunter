@@ -256,6 +256,42 @@
   </div>
 </div>
 
+<!-- ═══ Onboarding Modal ═══════════════════════════════════════ -->
+<div class="modal-overlay" id="onboardModal" hidden>
+  <div class="modal">
+    <div class="modal-header"><h2>🚀 Welcome! Let us set up your feed</h2></div>
+    <div class="modal-body">
+      <div id="onboardStep1">
+        <h3 style="margin-bottom:8px">Step 1: What are you interested in?</h3>
+        <div id="onboardInds" class="onboard-grid">
+          <label><input type="checkbox" value="Technology & Internet"> 💻 Technology</label>
+          <label><input type="checkbox" value="Finance & Fintech"> 💰 Finance & Fintech</label>
+          <label><input type="checkbox" value="Crypto & Web3"> 🪙 Crypto & Web3</label>
+          <label><input type="checkbox" value="Consulting & Advisory"> 📊 Consulting</label>
+          <label><input type="checkbox" value="Healthcare & Life Sciences"> 🏥 Healthcare</label>
+          <label><input type="checkbox" value="Energy & CleanTech"> ⚡ Energy</label>
+          <label><input type="checkbox" value="Industrial & Manufacturing"> 🏭 Industrial</label>
+          <label><input type="checkbox" value="Consumer & Retail"> 🛍️ Consumer</label>
+          <label><input type="checkbox" value="Media & Entertainment"> 🎬 Media</label>
+          <label><input type="checkbox" value="Government & Public Sector"> 🏛️ Government</label>
+        </div>
+        <button class="btn-act primary" onclick="onboardNext()" style="margin-top:12px">Next →</button>
+      </div>
+      <div id="onboardStep2" style="display:none">
+        <h3 style="margin-bottom:8px">Step 2: Where do you want to work?</h3>
+        <div id="onboardRegs" class="onboard-grid">
+          <label><input type="checkbox" value="North America"> 🇺🇸 North America</label>
+          <label><input type="checkbox" value="Europe"> 🇪🇺 Europe</label>
+          <label><input type="checkbox" value="APAC"> 🌏 APAC</label>
+          <label><input type="checkbox" value="Remote"> 🌐 Remote</label>
+        </div>
+        <button class="btn-act primary" onclick="finishOnboarding()" style="margin-top:12px">✨ Show me internships</button>
+        <p style="font-size:.7rem;color:var(--text-tertiary);margin-top:8px"><a href="#" onclick="document.getElementById('onboardModal').hidden=true;load();return false">Skip, show everything</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="app.js"></script>
 </body>
 </html>

@@ -166,8 +166,9 @@ function doLogin() {
   document.getElementById('authModal').hidden = true;
   currentUser = u;
   updateUserUI();
-  load();
-  loadProfileForm();
+  // Show onboarding if first time
+  if (!Store.profile()?.onboarded) { showOnboarding(); }
+  else { load(); loadProfileForm(); }
 }
 
 function doRegister() {
@@ -183,6 +184,39 @@ function doRegister() {
   updateUserUI();
   load();
   loadProfileForm();
+}
+
+/* ─── Onboarding ────────────────────────────────────────────── */
+function showOnboarding() {
+  document.getElementById('onboardStep1').style.display = 'block';
+  document.getElementById('onboardStep2').style.display = 'none';
+  document.getElementById('onboardModal').hidden = false;
+}
+function onboardNext() {
+  document.getElementById('onboardStep1').style.display = 'none';
+  document.getElementById('onboardStep2').style.display = 'block';
+}
+function finishOnboarding() {
+  // Apply selections as filters
+  const inds = [...document.querySelectorAll('#onboardInds input:checked')].map(c=>c.value);
+  const regs = [...document.querySelectorAll('#onboardRegs input:checked')].map(c=>c.value);
+  if (inds.length) document.getElementById('filterIndustry').value = inds[0];
+  if (regs.length) document.getElementById('filterRegion').value = regs[0];
+  // Save preference
+  const p = Store.profile(); p.onboarded = true;
+  if (inds.length) p.target = {...p.target||{}, industries: inds};
+  if (regs.length) p.target = {...p.target||{}, preferred_regions: regs};
+  Store.saveProfile(p);
+  document.getElementById('onboardModal').hidden = true;
+  load();
+  loadProfileForm();
+}
+
+/* ─── NEW Badge ──────────────────────────────────────────────── */
+function isNew(createdTime) {
+  if (!createdTime) return false;
+  const diff = Date.now() - new Date(createdTime).getTime();
+  return diff < 7 * 24 * 3600 * 1000; // 7 days
 }
 
 function doLogout() {
@@ -353,7 +387,10 @@ function card(e) {
   return `
   <div class="card${d !== null && d <= 7 && d >= 0 ? ' card-urgent' : ''}" data-industry="${indClass}" data-id="${e.id}">
     <div class="card-top">
-      <span class="card-region-info">${e.regionFlag||'🌍'} ${e.region||''} · ${e.country} · ${e.city}</span>
+      <div style="display:flex;align-items:center;gap:6px">
+        ${isNew(e.createdTime) ? '<span class="new-badge">NEW</span>' : ''}
+        <span class="card-region-info">${e.regionFlag||'🌍'} ${e.region||''} · ${e.country} · ${e.city}</span>
+      </div>
       <div style="display:flex;align-items:center;gap:6px">
         ${tracked ? `<span class="card-tracked">📌 ${tracked.status}</span>` : ''}
         <button class="card-fav${isFav?' active':''}" onclick="toggleFav(this,'${e.id}')">${isFav?'⭐':'☆'}</button>
