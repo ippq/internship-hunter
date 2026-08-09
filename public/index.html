@@ -27,7 +27,9 @@
     <nav class="header-nav">
       <button class="nav-btn active" data-tab="discover">🔍 Discover</button>
       <button class="nav-btn" data-tab="applied">📋 Applied <span class="nav-badge" id="appliedCount">0</span></button>
+      <button class="nav-btn" data-tab="applied">📋 Applied <span class="nav-badge" id="appliedCount">0</span></button>
       <button class="nav-btn" data-tab="ended">✅ Ended <span class="nav-badge" id="endedCount">0</span></button>
+      <button class="nav-btn" data-tab="analytics">📊 Analytics</button>
       <button class="nav-btn" data-tab="settings">⚙️ Settings</button>
     </nav>
   </div>
@@ -36,77 +38,78 @@
 <!-- ═══ Hero Stats ════════════════════════════════════════════ -->
 <section class="hero">
   <div class="hero-stats">
-    <div class="hero-stat"><div class="val" id="statTotal">--</div><div class="lbl">Total Internships</div></div>
     <div class="hero-stat"><div class="val" id="statOpen">--</div><div class="lbl">Open Now</div></div>
     <div class="hero-stat urgent"><div class="val" id="statUrgent">--</div><div class="lbl">Closing Soon</div></div>
     <div class="hero-stat saved"><div class="val" id="favoriteCount">0</div><div class="lbl">Saved</div></div>
-    <div class="hero-stat"><div class="val" id="statIndustries">10</div><div class="lbl">Industries</div></div>
+    <div class="hero-stat"><div class="val" id="statTotal">--</div><div class="lbl">Total</div></div>
   </div>
 </section>
 
 <!-- ═══ Filter Bar ════════════════════════════════════════════ -->
 <section class="filter-bar">
   <div class="filter-inner">
-    <button class="filter-chip" id="filterFavorites">⭐ Saved</button>
-    <button class="filter-chip urgent" id="btnUrgent">⚠️ Urgent</button>
-    <button class="filter-chip" id="filterVisa">🛂 Visa Sponsor</button>
-    <select id="filterTier" class="filter-select">
-      <option value="">🏢 All Tiers</option>
-      <option value="Fortune 500 / Global Corp">Fortune 500</option>
-      <option value="Unicorn / Growth Stage">Unicorn</option>
-      <option value="Startup / SME">Startup</option>
-      <option value="Government / Non-profit">Gov / NPO</option>
-    </select>
-    <select id="filterRegion" class="filter-select">
-      <option value="">🌍 All Regions</option>
-      <option value="North America">🇺🇸 North America</option>
-      <option value="Europe">🇪🇺 Europe</option>
-      <option value="APAC">🌏 APAC</option>
-      <option value="Remote">🌐 Remote</option>
-    </select>
-    <select id="filterCountry" class="filter-select">
-      <option value="">🏳️ All Countries</option>
-    </select>
-    <select id="filterIndustry" class="filter-select">
-      <option value="">💼 All Industries</option>
-      <option value="Technology & Internet">Technology</option>
-      <option value="Finance & Fintech">Finance & Fintech</option>
-      <option value="Crypto & Web3">Crypto & Web3</option>
-      <option value="Consulting & Advisory">Consulting</option>
-      <option value="Healthcare & Life Sciences">Healthcare</option>
-      <option value="Energy & CleanTech">Energy</option>
-      <option value="Industrial & Manufacturing">Industrial</option>
-      <option value="Consumer & Retail">Consumer</option>
-      <option value="Media & Entertainment">Media</option>
-      <option value="Government & Public Sector">Government</option>
-    </select>
-    <select id="filterFunc" class="filter-select">
-      <option value="">🔧 All Functions</option>
-      <option value="Engineering & Development">Engineering</option>
-      <option value="AI / ML & Data">AI / ML & Data</option>
-      <option value="Quantitative Finance">Quantitative Finance</option>
-      <option value="Product & Design">Product & Design</option>
-      <option value="Marketing & Growth">Marketing</option>
-      <option value="Sales & BD">Sales & BD</option>
-      <option value="Operations & Strategy">Operations</option>
-      <option value="Finance & Accounting">Finance & Accounting</option>
-      <option value="Consulting & Research">Consulting</option>
-      <option value="People & Culture">People & Culture</option>
-    </select>
-    <select id="filterYear" class="filter-select">
-      <option value="">📅 All Years</option>
-      <option value="2026">2026</option>
-      <option value="2027">2027</option>
-    </select>
-    <select id="filterSort" class="filter-select">
-      <option value="deadline">⏰ Deadline</option>
-      <option value="newest">🆕 Newest</option>
-      <option value="company">🏢 Company</option>
-    </select>
-    <div class="filter-search-wrap">
-      <span class="filter-search-icon">🔍</span>
-      <input type="text" id="filterSearch" class="filter-search" placeholder="Search company, role, city...">
-      <button class="btn-act" onclick="exportCSV()" title="Export current results as CSV">📥 Export</button>
+    <div class="filter-row-top">
+      <button class="filter-chip" id="filterFavorites">⭐ Saved</button>
+      <button class="filter-chip urgent" id="btnUrgent">⚠️ Urgent</button>
+      <button class="filter-chip" id="filterVisa">🛂 Visa</button>
+      <select id="filterTier" class="filter-select">
+        <option value="">🏢 All Tiers</option>
+        <option value="Fortune 500 / Global Corp">Fortune 500</option>
+        <option value="Unicorn / Growth Stage">Unicorn</option>
+        <option value="Startup / SME">Startup</option>
+        <option value="Government / Non-profit">Gov/NPO</option>
+      </select>
+      <select id="filterRegion" class="filter-select">
+        <option value="">🌍 All Regions</option>
+        <option value="North America">🇺🇸 NA</option>
+        <option value="Europe">🇪🇺 EU</option>
+        <option value="APAC">🌏 APAC</option>
+        <option value="Remote">🌐 Remote</option>
+      </select>
+      <select id="filterCountry" class="filter-select"><option value="">🏳️ All Countries</option></select>
+      <select id="filterIndustry" class="filter-select">
+        <option value="">💼 Industry</option>
+        <option value="Technology & Internet">Technology</option>
+        <option value="Finance & Fintech">Finance & Fintech</option>
+        <option value="Crypto & Web3">Crypto & Web3</option>
+        <option value="Consulting & Advisory">Consulting</option>
+        <option value="Healthcare & Life Sciences">Healthcare</option>
+        <option value="Energy & CleanTech">Energy</option>
+        <option value="Industrial & Manufacturing">Industrial</option>
+        <option value="Consumer & Retail">Consumer</option>
+        <option value="Media & Entertainment">Media</option>
+        <option value="Government & Public Sector">Government</option>
+      </select>
+      <select id="filterFunc" class="filter-select">
+        <option value="">🔧 Function</option>
+        <option value="Engineering & Development">Engineering</option>
+        <option value="AI / ML & Data">AI / ML & Data</option>
+        <option value="Quantitative Finance">Quant Finance</option>
+        <option value="Product & Design">Product & Design</option>
+        <option value="Marketing & Growth">Marketing</option>
+        <option value="Sales & BD">Sales & BD</option>
+        <option value="Operations & Strategy">Operations</option>
+        <option value="Finance & Accounting">Finance & Acct</option>
+        <option value="Consulting & Research">Consulting</option>
+        <option value="People & Culture">People & Culture</option>
+      </select>
+      <select id="filterYear" class="filter-select">
+        <option value="">📅 Year</option>
+        <option value="2026">2026</option>
+        <option value="2027">2027</option>
+      </select>
+      <div class="filter-actions">
+        <select id="filterSort" class="filter-select" style="min-width:auto;width:auto">
+          <option value="deadline">⏰</option>
+          <option value="newest">🆕</option>
+          <option value="company">🔤</option>
+        </select>
+        <div class="filter-search-wrap">
+          <span class="filter-search-icon">🔍</span>
+          <input type="text" id="filterSearch" class="filter-search" placeholder="Search...">
+        </div>
+        <button class="btn-act" onclick="exportCSV()" title="Export CSV">📥</button>
+      </div>
     </div>
   </div>
 </section>
@@ -130,6 +133,13 @@
   <!-- Ended -->
   <section class="view" id="view-ended">
     <div id="endedContent"></div>
+  </section>
+
+  <!-- Analytics -->
+  <section class="view" id="view-analytics">
+    <div class="content-area">
+      <div class="funnel" id="funnel"></div>
+    </div>
   </section>
 
   <!-- Settings -->

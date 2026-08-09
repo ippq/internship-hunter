@@ -129,6 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (tab === 'discover') render();
     if (tab === 'applied') renderApplied();
     if (tab === 'ended') renderEnded();
+    if (tab === 'analytics') renderFunnel();
   }));
   setupFilters();
   readURLParams();
@@ -371,10 +372,15 @@ function card(e) {
     </div>
     <div class="card-deadline ${dlCls}">${dlHtml}</div>
     <div class="card-actions">
-      ${e.applyUrl ? `<a href="${e.applyUrl}" target="_blank" rel="noopener" class="btn-act apply">🔗 Apply</a>` : ''}
+      ${e.applyUrl ? `<a href="${e.applyUrl}" target="_blank" rel="noopener" class="btn-act primary">🔗 Apply Now</a>` : ''}
       <button class="btn-act primary" onclick="openWizard('${escAttr(e.company)}','${escAttr(e.role)}','${escAttr(e.applyUrl)}','${e.id}')">🚀 Smart Apply</button>
-      <button class="btn-act" onclick="openTrack('${e.id}','${escAttr(e.company)}','${escAttr(e.role)}')">📌 Track</button>
-      <button class="btn-act" onclick="togglePreview(this,'${e.id}')">📄 Preview</button>
+      <div class="card-menu-wrap">
+        <button class="btn-act card-menu-btn" onclick="toggleCardMenu(this)" title="More actions">···</button>
+        <div class="card-menu" style="display:none">
+          <button onclick="openTrack('${e.id}','${escAttr(e.company)}','${escAttr(e.role)}');this.closest('.card-menu').style.display='none'">📌 Track</button>
+          <button onclick="togglePreview(this,'${e.id}');this.closest('.card-menu').style.display='none'">📄 Preview</button>
+        </div>
+      </div>
     </div>
     <div class="card-preview" id="preview-${e.id}" style="display:none">
       <div class="preview-content">${esc(e.jdSummary || e.notes || 'No description available.')}</div>
@@ -538,12 +544,74 @@ function salaryTag(notes) {
   return '';
 }
 
+function toggleCardMenu(btn) {
+  const menu = btn.nextElementSibling;
+  const isOpen = menu.style.display === 'block';
+  // Close all other menus
+  document.querySelectorAll('.card-menu').forEach(m => m.style.display = 'none');
+  menu.style.display = isOpen ? 'none' : 'block';
+}
+// Close card menu on outside click
+document.addEventListener('click', e => {
+  if (!e.target.closest('.card-menu-wrap')) {
+    document.querySelectorAll('.card-menu').forEach(m => m.style.display = 'none');
+  }
+});
+
 function togglePreview(btn, id) {
   const panel = document.getElementById('preview-'+id);
   if (!panel) return;
   const shown = panel.style.display === 'block';
   panel.style.display = shown ? 'none' : 'block';
   btn.textContent = shown ? '📄 Preview' : '📄 Hide';
+}
+
+/* ─── Funnel Analytics ──────────────────────────────────────── */
+function renderFunnel() {
+  const apps = Store.apps();
+  const ct = document.getElementById('funnel');
+  if (!ct) return;
+
+  if (!apps.length) {
+    ct.innerHTML = '<div class="empty-state"><div class="empty-icon">📊</div><h2>No data yet</h2><p>Start tracking applications with <strong>📌 Track</strong> to see your funnel.</p></div>';
+    return;
+  }
+
+  const stages = { applied: 0, interview: 0, offer: 0, rejected: 0, accepted: 0 };
+  for (const a of apps) { if (stages[a.status] !== undefined) stages[a.status]++; }
+
+  const total = apps.length;
+  const interviewRate = stages.applied > 0 ? ((stages.interview / stages.applied) * 100).toFixed(0) : 0;
+  const offerRate = (stages.interview + stages.offer + stages.accepted) > 0
+    ? (((stages.offer + stages.accepted) / (stages.interview + stages.offer + stages.accepted + stages.rejected)) * 100).toFixed(0) : 0;
+
+  // Industry breakdown
+  const byInd = {};
+  for (const a of apps) {
+    const match = fullData.find(e => e.id === a.notionId);
+    const ind = match ? (match.industry[0] || 'Unknown') : 'Unknown';
+    byInd[ind] = (byInd[ind] || 0) + 1;
+  }
+
+  ct.innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px">
+      <div class="funnel-card"><div class="funnel-num">${total}</div><div class="funnel-lbl">Total Applications</div></div>
+      <div class="funnel-card"><div class="funnel-num">${stages.interview}</div><div class="funnel-lbl">Interviews · ${interviewRate}% rate</div></div>
+      <div class="funnel-card"><div class="funnel-num">${stages.offer + stages.accepted}</div><div class="funnel-lbl">Offers · ${offerRate}% rate</div></div>
+      <div class="funnel-card"><div class="funnel-num">${stages.accepted}</div><div class="funnel-lbl">Accepted</div></div>
+    </div>
+    <h3 style="margin-bottom:12px">Applications by Industry</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px">
+      ${Object.entries(byInd).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`
+        <div class="funnel-bar"><span>${k}</span><span>${v}</span><div class="fbar"><div style="width:${(v/total*100)}%"></div></div></div>
+      `).join('')}
+    </div>
+    <h3 style="margin:20px 0 12px">Funnel Stages</h3>
+    <div class="funnel-viz">
+      ${['applied','interview','offer','accepted'].map(s=>`
+        <div class="fv-stage"><div class="fv-bar" style="height:${Math.max(stages[s]/total*200, 4)}px"></div><span>${s}</span><strong>${stages[s]||0}</strong></div>
+      `).join('')}
+    </div>`;
 }
 
 /* ─── CSV Export ────────────────────────────────────────────── */
