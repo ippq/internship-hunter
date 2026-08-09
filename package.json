@@ -1,0 +1,9 @@
+{
+  "name": "internship-hunter",
+  "version": "1.0.0",
+  "description": "Global Internship Tracker — 567 internships across 4 regions",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  }
+}

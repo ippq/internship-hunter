@@ -1,0 +1,18 @@
+name: Refresh Internship Data
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Daily 6am UTC
+  workflow_dispatch:       # Manual trigger
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: node scripts/build-data.js
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Auto-refresh internship data'
+          file_pattern: 'public/data.json'

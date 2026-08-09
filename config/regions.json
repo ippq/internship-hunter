@@ -1,0 +1,22 @@
+{
+  "searchTemplates": {
+    "North America": "{company} 2027 summer internship {role} site:boards.greenhouse.io OR site:jobs.lever.co OR site:greenhouse.io",
+    "Europe": "{company} 2027 summer internship {role} London Dublin Amsterdam Paris Berlin site:boards.greenhouse.io OR site:jobs.lever.co",
+    "APAC": "{company} 2027 summer internship {role} Singapore Hong Kong Tokyo Sydney site:boards.greenhouse.io OR site:jobs.lever.co",
+    "Remote": "{company} 2027 internship remote {role}"
+  },
+  "defaultTargets": [
+    { "name": "Software Engineering", "keywords": ["software engineer", "backend", "fullstack", "frontend"] },
+    { "name": "Quantitative Trading", "keywords": ["quantitative trader", "quant trading", "algorithmic trading"] },
+    { "name": "Quantitative Research", "keywords": ["quantitative researcher", "quant research", "statistical arbitrage"] },
+    { "name": "AI / Machine Learning", "keywords": ["machine learning", "AI research", "deep learning", "LLM", "NLP"] },
+    { "name": "Data Science", "keywords": ["data scientist", "data analyst", "product analytics"] }
+  ],
+  "industryColors": {
+    "AI": "#7c3aed",
+    "Computer Science": "#2563eb",
+    "Fintech": "#059669",
+    "Crypto": "#ea580c",
+    "Finance": "#d97706"
+  }
+}

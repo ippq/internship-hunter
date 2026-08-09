@@ -1,0 +1,30 @@
+{
+  "regions": {
+    "North America": {
+      "id": "3b72ee6a-4a2c-8158-be56-fab4086b5f3b",
+      "flag": "🇺🇸",
+      "label": "North America",
+      "countries": ["United States", "Canada"]
+    },
+    "Europe": {
+      "id": "3b72ee6a-4a2c-813b-a102-e1ddaab86f4e",
+      "flag": "🇪🇺",
+      "label": "Europe",
+      "countries": ["United Kingdom", "Germany", "France", "Netherlands", "Switzerland", "Sweden", "Ireland", "Denmark", "Finland", "Norway", "Belgium", "Austria", "Spain", "Italy", "Portugal", "Poland", "Estonia", "Luxembourg"]
+    },
+    "APAC": {
+      "id": "3b72ee6a-4a2c-816b-90ee-cd2d65109a1e",
+      "flag": "🌏",
+      "label": "APAC",
+      "countries": ["Singapore", "Japan", "South Korea", "Australia", "China", "Hong Kong", "Taiwan", "India"]
+    },
+    "Remote": {
+      "id": "3b72ee6a-4a2c-8150-98fb-f4072d0a40a7",
+      "flag": "🌐",
+      "label": "Remote/Global",
+      "countries": ["Remote (Global)"]
+    }
+  },
+  "notionToken": "env:NOTION_TOKEN",
+  "notionVersion": "2022-06-28"
+}

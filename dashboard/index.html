@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Discover and apply to 2026-2027 internships worldwide. 10 industries, 4 regions, Fortune 500 to startups.">
+<title>Internship Hunter — Global Internship Tracker</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+</head>
+<body>
+
+<!-- ═══ Header ═══════════════════════════════════════════════ -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-brand">
+      🎯 Internship Hunter
+      <span id="totalBadge">-- internships</span>
+    </div>
+    <nav class="header-nav">
+      <button class="nav-btn active" data-tab="discover">🔍 Discover</button>
+      <button class="nav-btn" data-tab="applied">📋 Applied <span class="nav-badge" id="appliedCount">0</span></button>
+      <button class="nav-btn" data-tab="ended">✅ Ended <span class="nav-badge" id="endedCount">0</span></button>
+      <button class="nav-btn" data-tab="settings">⚙️ Settings</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══ Hero Stats ════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="val" id="statTotal">--</div><div class="lbl">Total Internships</div></div>
+    <div class="hero-stat"><div class="val" id="statOpen">--</div><div class="lbl">Open Now</div></div>
+    <div class="hero-stat urgent"><div class="val" id="statUrgent">--</div><div class="lbl">Closing Soon</div></div>
+    <div class="hero-stat saved"><div class="val" id="favoriteCount">0</div><div class="lbl">Saved</div></div>
+    <div class="hero-stat"><div class="val" id="statIndustries">10</div><div class="lbl">Industries</div></div>
+  </div>
+</section>
+
+<!-- ═══ Filter Bar ════════════════════════════════════════════ -->
+<section class="filter-bar">
+  <div class="filter-inner">
+    <button class="filter-chip" id="filterFavorites">⭐ Saved</button>
+    <button class="filter-chip urgent" id="btnUrgent">⚠️ Urgent</button>
+    <button class="filter-chip" id="filterVisa">🛂 Visa Sponsor</button>
+    <select id="filterTier" class="filter-select">
+      <option value="">🏢 All Tiers</option>
+      <option value="Fortune 500 / Global Corp">Fortune 500</option>
+      <option value="Unicorn / Growth Stage">Unicorn</option>
+      <option value="Startup / SME">Startup</option>
+      <option value="Government / Non-profit">Gov / NPO</option>
+    </select>
+    <select id="filterRegion" class="filter-select">
+      <option value="">🌍 All Regions</option>
+      <option value="North America">🇺🇸 North America</option>
+      <option value="Europe">🇪🇺 Europe</option>
+      <option value="APAC">🌏 APAC</option>
+      <option value="Remote">🌐 Remote</option>
+    </select>
+    <select id="filterCountry" class="filter-select">
+      <option value="">🏳️ All Countries</option>
+    </select>
+    <select id="filterIndustry" class="filter-select">
+      <option value="">💼 All Industries</option>
+      <option value="Technology & Internet">Technology</option>
+      <option value="Finance & Fintech">Finance & Fintech</option>
+      <option value="Crypto & Web3">Crypto & Web3</option>
+      <option value="Consulting & Advisory">Consulting</option>
+      <option value="Healthcare & Life Sciences">Healthcare</option>
+      <option value="Energy & CleanTech">Energy</option>
+      <option value="Industrial & Manufacturing">Industrial</option>
+      <option value="Consumer & Retail">Consumer</option>
+      <option value="Media & Entertainment">Media</option>
+      <option value="Government & Public Sector">Government</option>
+    </select>
+    <select id="filterFunc" class="filter-select">
+      <option value="">🔧 All Functions</option>
+      <option value="Engineering & Development">Engineering</option>
+      <option value="AI / ML & Data">AI / ML & Data</option>
+      <option value="Quantitative Finance">Quantitative Finance</option>
+      <option value="Product & Design">Product & Design</option>
+      <option value="Marketing & Growth">Marketing</option>
+      <option value="Sales & BD">Sales & BD</option>
+      <option value="Operations & Strategy">Operations</option>
+      <option value="Finance & Accounting">Finance & Accounting</option>
+      <option value="Consulting & Research">Consulting</option>
+      <option value="People & Culture">People & Culture</option>
+    </select>
+    <select id="filterYear" class="filter-select">
+      <option value="">📅 All Years</option>
+      <option value="2026">2026</option>
+      <option value="2027">2027</option>
+    </select>
+    <select id="filterSort" class="filter-select">
+      <option value="deadline">⏰ Deadline</option>
+      <option value="newest">🆕 Newest</option>
+      <option value="company">🏢 Company</option>
+    </select>
+    <div class="filter-search-wrap">
+      <span class="filter-search-icon">🔍</span>
+      <input type="text" id="filterSearch" class="filter-search" placeholder="Search company, role, city...">
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Content ═══════════════════════════════════════════════ -->
+<main class="content-area">
+
+  <!-- Discover -->
+  <section class="view active" id="view-discover">
+    <div class="card-grid" id="cardGrid">
+      <div class="loading"><span class="spinner"></span>Loading internships&hellip;</div>
+    </div>
+    <div class="pagination" id="pagination"></div>
+  </section>
+
+  <!-- Applied -->
+  <section class="view" id="view-applied">
+    <div id="appliedContent"></div>
+  </section>
+
+  <!-- Ended -->
+  <section class="view" id="view-ended">
+    <div id="endedContent"></div>
+  </section>
+
+  <!-- Settings -->
+  <section class="view" id="view-settings">
+    <div class="settings-grid">
+      <div class="setting-card">
+        <h3>👤 Candidate Profile</h3>
+        <div class="setting-row"><span>Status</span><span class="setting-status" id="profileStatus">Not configured</span></div>
+        <form id="profileForm" onsubmit="event.preventDefault(); saveProfile();">
+          <fieldset><legend>Identity</legend>
+            <div class="form-row"><div class="form-field"><label>Full Name</label><input id="pfName" placeholder="Jane Smith"></div><div class="form-field"><label>Email</label><input id="pfEmail" type="email" placeholder="jane@example.com"></div></div>
+            <div class="form-row"><div class="form-field"><label>Phone</label><input id="pfPhone"></div><div class="form-field"><label>LinkedIn</label><input id="pfLinkedin"></div></div>
+            <div class="form-field"><label>GitHub</label><input id="pfGithub"></div>
+          </fieldset>
+          <fieldset><legend>Education</legend>
+            <div class="form-row"><div class="form-field"><label>University</label><input id="pfUni"></div><div class="form-field"><label>Degree</label><input id="pfDegree"></div></div>
+            <div class="form-row"><div class="form-field"><label>Major</label><input id="pfMajor"></div><div class="form-field"><label>Graduation</label><input id="pfGrad" placeholder="e.g. June 2028"></div></div>
+          </fieldset>
+          <fieldset><legend>Target</legend>
+            <div class="form-row"><div class="form-field"><label>Target Roles</label><input id="pfRoles" placeholder="SWE, Quant, PM"></div><div class="form-field"><label>Cities</label><input id="pfCities" placeholder="SF, NYC, London"></div></div>
+            <div class="form-field"><label><input type="checkbox" id="pfRemote" checked> Open to remote</label></div>
+          </fieldset>
+          <button type="submit" class="btn-act primary">💾 Save Profile</button>
+        </form>
+      </div>
+      <div class="setting-card">
+        <h3>🔗 Connections</h3>
+        <div class="setting-row"><span>Notion API</span><span id="notionStatus">Checking...</span></div>
+        <div class="setting-row"><span>Playwright MCP</span><span id="playwrightStatus">Not connected</span></div>
+        <p style="font-size:.75rem;color:var(--text-tertiary);margin-top:8px">Run <code>claude mcp add playwright npx '@playwright/mcp@latest'</code></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══ Smart Apply Wizard ════════════════════════════════════ -->
+<div class="modal-overlay" id="applyWizard" hidden>
+  <div class="modal">
+    <div class="modal-header"><h2>🚀 Smart Apply</h2><button class="modal-close" onclick="closeApplyWizard()">✕</button></div>
+    <div class="wiz-progress"><span class="wiz-dot active">1</span><span class="wiz-line"></span><span class="wiz-dot">2</span><span class="wiz-line"></span><span class="wiz-dot">3</span></div>
+    <div class="modal-body">
+      <div class="wiz-step active" id="wizStep1">
+        <h3>Step 1: Check Materials</h3>
+        <p>Applying to <strong id="wizCompany">--</strong> — <span id="wizRole">--</span></p>
+        <p>🔗 <a id="wizUrl" href="#" target="_blank">Open listing</a></p>
+        <div id="materialChecks" class="material-checks"></div>
+        <div id="wizReady" style="display:none" class="wiz-ready">✅ All materials ready</div>
+        <button class="btn-act primary" onclick="gotoWizStep(2)" style="margin-top:10px">Next →</button>
+      </div>
+      <div class="wiz-step" id="wizStep2">
+        <h3>Step 2: Launch via Claude Code</h3>
+        <pre id="applyCommand" style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px;font-size:.75rem;overflow-x:auto;white-space:pre-wrap">Loading...</pre>
+        <button class="btn-act primary" onclick="copyApplyCommand()">📋 Copy & Launch</button>
+      </div>
+      <div class="wiz-step" id="wizStep3">
+        <h3>Step 3: What Claude Will Do</h3>
+        <ol class="steps-list" id="applySteps"></ol>
+        <p style="font-size:.78rem;color:var(--yellow);margin-top:8px">⚠️ Never submits without your confirmation.</p>
+        <button class="btn-act primary" onclick="copyApplyCommand()">📋 Copy & Start</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Track Modal ═══════════════════════════════════════════ -->
+<div class="modal-overlay" id="trackModal" hidden>
+  <div class="modal">
+    <div class="modal-header"><h2>📌 Track Application</h2><button class="modal-close" onclick="closeTrackModal()">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="trackNotionId">
+      <div class="form-field"><label>Company</label><input id="trackCompany" readonly></div>
+      <div class="form-field"><label>Role</label><input id="trackRole" readonly></div>
+      <div class="form-field"><label>Status</label><select id="trackStatus"><option value="applied">📨 Applied</option><option value="interview">🎙️ Interview</option><option value="offer">🎉 Offer</option><option value="rejected">❌ Rejected</option><option value="accepted">✅ Accepted</option></select></div>
+      <div class="form-field"><label>Date</label><input type="date" id="trackDate"></div>
+      <div class="form-field"><label>Notes</label><input id="trackNotes" placeholder="Confirmation #, next steps..."></div>
+      <button class="btn-act primary" onclick="saveTrackEntry()">💾 Save</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
