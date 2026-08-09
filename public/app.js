@@ -339,6 +339,14 @@ async function load() {
   loadStats();
 }
 
+// Double-click card to open Apply URL
+document.addEventListener('dblclick', function(e) {
+  const card = e.target.closest('.card');
+  if (!card) return;
+  const applyBtn = card.querySelector('a[href]');
+  if (applyBtn) window.open(applyBtn.href, '_blank');
+});
+
 function renderCardsFrom(data) {
   const grid = document.getElementById('cardGrid');
   if (!data.length) { grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div><h2>No internships found</h2><p>Try adjusting filters.</p></div>'; return; }

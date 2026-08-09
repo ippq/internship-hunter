@@ -89,6 +89,7 @@ select, input { font-family: inherit; font-size: inherit; }
   transition: all var(--transition); cursor: pointer; white-space: nowrap;
 }
 .filter-chip:hover { border-color: var(--accent); color: var(--text); }
+.filter-chip:active { transform: scale(.95); }
 .filter-chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 .filter-chip.urgent.active { background: var(--red); border-color: var(--red); }
 .filter-select {
@@ -126,7 +127,8 @@ select, input { font-family: inherit; font-size: inherit; }
   border-radius: var(--radius); padding: 20px; transition: all var(--transition);
   position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 8px;
 }
-.card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow); }
+.card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,.35); }
+.card:active { transform: translateY(-1px); }
 .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
 
 .card[data-industry="technology-internet"]::before,
@@ -200,8 +202,9 @@ select, input { font-family: inherit; font-size: inherit; }
   transition: all var(--transition); cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
 }
 .btn-act:hover { border-color: var(--accent); color: var(--text); background: var(--bg-hover); }
+.btn-act:active { transform: scale(.96); }
 .btn-act.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
-.btn-act.primary:hover { background: var(--accent-hover); }
+.btn-act.primary:hover { background: var(--accent-hover); box-shadow: 0 4px 12px var(--accent-glow); }
 
 /* ─── Pagination ─────────────────────────────────────────────── */
 .pagination { display: flex; justify-content: center; gap: 6px; padding: 28px 0; }
