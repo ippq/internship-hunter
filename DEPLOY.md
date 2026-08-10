@@ -1,71 +1,57 @@
-# 🚀 Deploy to Vercel (Zero Cost)
-
-## One-time Setup
-
-1. Install Vercel CLI:
-```bash
-npm install -g vercel
-```
-
-2. Login (GitHub/GitLab/Email):
-```bash
-vercel login
-```
-
-## Deploy
-
-```bash
-cd C:\Users\richa\projects\internship-hunter
-vercel
-```
-
-First deploy asks:
-- Set up and deploy? → **Y**
-- Which scope? → your account
-- Link to existing project? → **N**
-- Project name → `internship-hunter` (or whatever)
-- Root directory? → `.` (default)
-- Override settings? → **N**
-
-After confirmation, Vercel builds and deploys. You'll get a URL like:
-`https://internship-hunter-xxxxx.vercel.app`
-
-## Production Deploy
-
-```bash
-vercel --prod
-```
-
-This gives you a permanent URL.
-
-## Custom Domain (Optional, Still Free)
-
-1. Buy a domain (e.g., Namecheap $10/yr — not free but cheap)
-2. In Vercel dashboard → Project → Settings → Domains → Add
-3. Follow DNS instructions
+# 🚀 Vercel Deployment Guide
 
 ## Architecture
 
 ```
-Browser → Vercel CDN (static HTML/CSS/JS)
-         ↓
-Vercel Serverless Functions (/api/*)
-         ↓
-Notion API (4 regional databases, 567 entries)
+Notion API → build-data.js → public/data.json → Vercel Static CDN
 ```
 
-Static files: `public/`
-Serverless functions: `api/internships.js`, `api/stats.js`, `api/profile.js`
-Shared Notion logic: `api/_notion.js` (cached, 5-min TTL)
+**Zero server cost. No serverless functions. Pure static hosting.**
 
-## Limits (Vercel Hobby / Free)
+- `public/data.json` is pre-built at deploy time (822 entries, ~650KB)
+- All filtering, sorting, pagination happens client-side
+- Vercel serves static HTML/CSS/JS globally via CDN
 
-| Resource | Limit | Status |
-|----------|-------|--------|
-| Bandwidth | 100 GB/month | ✅ Plenty |
-| Serverless executions | 100K/day | ✅ Fine |
-| Function timeout | 10 seconds | ✅ Works (cached after first call) |
-| Build time | 45 min/month | ✅ |
+## Deploy
 
-First visit after deploy: ~10s (cold start + Notion pagination for 567 entries)
-Subsequent visits: <500ms (cached)
+```bash
+# Build data from Notion (requires NOTION_TOKEN)
+export NOTION_TOKEN=ntn_...
+node scripts/build-data.js
+
+# Deploy to production
+npx vercel --prod --yes
+```
+
+Live at: **https://internship-hunter-six.vercel.app**
+
+## Daily Refresh
+
+The GitHub Action (`.github/workflows/refresh.yml`) can auto-rebuild:
+1. Add `NOTION_TOKEN` as a [GitHub Secret](https://github.com/ippq/internship-hunter/settings/secrets/actions)
+2. The workflow runs daily at 6am UTC, rebuilds `data.json`, and commits
+
+## Adding Notion Token to Vercel
+
+To enable auto-refresh during Vercel builds:
+1. Vercel Dashboard → Project → Settings → Environment Variables
+2. Add `NOTION_TOKEN` with your token value
+3. Update `vercel.json` buildCommand to include `node scripts/build-data.js`
+
+## Manual Refresh
+
+```bash
+export NOTION_TOKEN=ntn_...
+node scripts/build-data.js   # Rebuild data.json
+npx vercel --prod --yes      # Deploy
+```
+
+## Limits (Vercel Hobby)
+
+| Resource | Limit | Usage |
+|----------|-------|-------|
+| Bandwidth | 100 GB/month | ~650KB per load, well within limits |
+| Build time | 45 min/month | Build takes ~15 seconds |
+| Static files | Unlimited | Single 650KB JSON |
+
+No serverless functions used — the entire app is static HTML/CSS/JS.
